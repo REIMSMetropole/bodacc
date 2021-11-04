@@ -6,14 +6,7 @@ SELECT DATE from annonces
     AND uniteslegales.EFFECTIFS != 'NN'
     AND uniteslegales.EFFECTIFS >= '01'
     -- filtrer les sociétés civiles immobilières
-    AND uniteslegales.CATEGORIEJURIDIQUE != '6540'
-    AND uniteslegales.CATEGORIEJURIDIQUE != '6541'
-    AND uniteslegales.CATEGORIEJURIDIQUE != '6542'
-    AND uniteslegales.CATEGORIEJURIDIQUE != '6543'
-    AND uniteslegales.CATEGORIEJURIDIQUE != '6544'
-    AND (
-        NATURE = 'jugement de clôture pour insuffisance d''actif'
-        OR NATURE = 'jugement de clôture de la liquidation des biens pour insuffisance d''actif'
-        OR NATURE = 'jugement de clôture pour insuffisance d''actif et autorisant la reprise des poursuites individuelles'
-    )
+    and uniteslegales.CATEGORIEJURIDIQUE <> all (array['6540', '6541', '6542', '6543','6544']) 
+    and uniteslegales.CATEGORIEJURIDIQUE is not null
+    AND (nature ~* 'jugement')
     ORDER BY EFFECTIFS DESC;
